@@ -1,113 +1,52 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sentimental Analysis</title>
   <link rel="stylesheet" href="style.css">
-  <script src="index.js"></script>
-  <style>
-    #url_input{
-      display: none;
-    }
-    
-    #text_input{
-      display: none;
-    }
-
-    #file_input{
-      display: none;
-    }
-    #Score{
-      display: none;
-    }
-    #container{
-      display: none;
-    }
-    #SentimentCheck{
-      display: none;
-    }
-  </style>
+  <script src="index.js" defer></script>
 </head>
-
 <body>
   <main>
     <h2>Sentimental Analysis</h2>
     <div class="wrapper">
-      <button value="URL" onclick="showurl_input()">URL</button>
-
-      <button value="Text" onclick="showtext_input()">Text</button>
-      <button value="Image" onclick="showimage_input()">Image</button>
-      <div class="title">
-         Sentiment Checker
-      </div>
-      <div class="field">
-         <button value="URL" onclick="hideTitle()">URL</button>
-      </div>
-      <form action="t">
-         <div class="field">
-            <a href="#"><button value="Text">Text</button></a>
-         </div>
-      </form>
-      <form action="/ui"><div class="field">
-            <a href="#"><button value="Upload image">Upload image</button></a>
-      </div>
-      </form>
-   </div>
-
-<div class="wrapper">
-      <div id="title">
-         Sentiment Checker
-      <button value="URL">URL</button>
-
-      <button value="Text">Text</button>
-      <button value="Upload image">Upload image</button>
-
+      <button onclick="showInputField('url_input')">URL</button>
+      <button onclick="showInputField('text_input')">Text</button>
+      <button onclick="showInputField('file_input')">Image</button>
     </div>
-    <br>
 
-    <div class="wrap">
-
-      <div id="check">
-        Sentiment Checker
+    <div class="field">
+      <input type="text" id="url_input" placeholder="Enter your URL">
+      <textarea id="text_input" placeholder="Enter your text here..."></textarea>
+      <div class="file_input" id="file_input">
+        <input type="file" accept="image/*" id="image-upload" style="display:none;">
+        <span class="image-upload-icon">+</span><br>
+        <span class="image-upload-text">Drag and drop an image here or click to select a file</span>
       </div>
-
-
-      <div class="field">
-        <input type="text" placeholder="Enter your URL" id="url_input">
-        <textarea id="text_input" placeholder="Enter your text here..."></textarea>
-        <input type="file" id="file_input">
-        <button value="SentimentCheck" id="SentimentCheck" onclick="showContainer()">Submit</button>
-      </div>
-
+      <button id="SentimentCheck" onclick="processInput()">Submit</button>
     </div>
-    <br>
+
     <div id="container">
-      <div class="result">
-        Result
+      <div class="result">Result</div>
+      <div id="Score">
+        <h4 class="text">Overall Score: <span id="sentiment">Positive</span></h4>
       </div>
-      <div>
-
-        <div id="Score">
-          <h4 class="text">Overall Score<span id="sentiment">Positive</span></h4>
+      <div class="results-flex">
+        <div class="result-section">
+          <label>Positive Lines
+            <button class="collapsible" onclick="toggleCollapse('positive_lines')">&darr;</button>
+          </label>
+          <div id="positive_lines" class="collapse-content"></div>
+        </div>
+        <div class="result-section">
+          <label>Negative Lines
+            <button class="collapsible negative" onclick="toggleCollapse('negative_lines')">&darr;</button>
+          </label>
+          <div id="negative_lines" class="collapse-content"></div>
         </div>
       </div>
     </div>
-    <label>Positive Line
-      <button class="collapsible">&darr;</button>
-    </label> 
-    </select>
-    <label>Negative Line
-      <button class="collapsible">&darr;</button>
-      </label> 
-      </select>
-      <br>
-     
   </main>
-  <script src="https://unpkg.com/markdown-it@8.4.2/dist/markdown-it.min.js"></script>
-  <script src="https://unpkg.com/base64-js@1.3.0/base64js.min.js"></script>
-  <script type="module" src="main.js"></script>
 </body>
-
 </html>

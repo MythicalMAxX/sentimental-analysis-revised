@@ -4,10 +4,47 @@ import os
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 from flask import Flask, jsonify, request, send_file, send_from_directory
+from random import choice
+from bs4 import BeautifulSoup
+import requests
 
-# 🔥 FILL THIS OUT FIRST! 🔥
-# 🔥 GET YOUR GEMINI API KEY AT 🔥
-# 🔥 https://g.co/ai/idxGetGeminiKey 🔥
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+class WebScraper:
+    def __init__(self):
+        self.user_agents = [
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0",
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 13.4; rv:109.0) Gecko/20100101 Firefox/115.0",
+            "Mozilla/5.0 (X11; Linux i686; rv:109.0) Gecko/20100101 Firefox/115.0",
+        ]
+
+    def scrape_data(self, url):
+        headers = {"User-Agent": choice(self.user_agents)}
+        response = requests.get(url, headers=headers)
+        soup = BeautifulSoup(response.content, "html.parser")
+        paragraphs = soup.find_all("p")
+        content = ""
+        for paragraph in paragraphs:
+            content += paragraph.text
+        return content
+
+    def process_data(self, content):
+        splitter = CharacterTextSplitter()
+        texts = splitter.split_text(content)
+        return texts
+
+    def analyze_sentiment(self, texts):
+        sia = SentimentIntensityAnalyzer()
+        sentiment_scores = []
+        for text in texts:
+            score = sia.polarity_scores(text)
+            sentiment_scores.append(score)
+        return sentiment_scores
+
+
+
 os.environ["GOOGLE_API_KEY"] = "TODO"; 
 
 app = Flask(__name__)
