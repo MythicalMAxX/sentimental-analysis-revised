@@ -38,10 +38,20 @@ class WebScraper:
     def analyze_sentiment(self, texts):
         sia = SentimentIntensityAnalyzer()
         sentiment_scores = []
+        positive_lines = []
+        negative_lines = []
+        
         for text in texts:
             score = sia.polarity_scores(text)
             sentiment_scores.append(score)
-        return sentiment_scores
+            
+            if score["compound"] > 0:
+                positive_lines.append(text)
+            elif score["compound"] < 0:
+                negative_lines.append(text)
+        
+        return sentiment_scores, positive_lines, negative_lines
+
 
 
 
